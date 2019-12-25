@@ -37,37 +37,35 @@ namespace KnstNotify.Core.APN
             var path = $"/3/device/{deviceToken}";
             var json = JsonSerializer.Serialize(notification);
 
-            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(apnConfig.Server + path))
+
+            using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(apnConfig.Server + path)) { Version = new Version(2, 0), Content = new StringContent(json) })
             {
-                Version = new Version(2, 0),
-                Content = new StringContent(json)
-            };
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", apnConfig.Jwt);
+                request.Headers.TryAddWithoutValidation(":method", "POST");
+                request.Headers.TryAddWithoutValidation(":path", path);
+                request.Headers.Add("apns-topic", apnConfig.Topic);
+                request.Headers.Add("apns-expiration", options.ApnsExpiration.ToString());
+                request.Headers.Add("apns-priority", options.ApnsPriority.ToString());
+                request.Headers.Add("apns-collapse-id", options.CollapseId);
+                request.Headers.Add("apns-push-type", options.IsBackground ? "background" : "alert"); // for iOS 13 required
 
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", apnConfig.Jwt);
-            request.Headers.TryAddWithoutValidation(":method", "POST");
-            request.Headers.TryAddWithoutValidation(":path", path);
-            request.Headers.Add("apns-topic", apnConfig.AppBundleIdentifier);
-            request.Headers.Add("apns-expiration", options.ApnsExpiration.ToString());
-            request.Headers.Add("apns-priority", options.ApnsPriority.ToString());
-            request.Headers.Add("apns-push-type", options.IsBackground ? "background" : "alert"); // for iOS 13 required
-
-            if (!string.IsNullOrWhiteSpace(options.ApnsId))
-            {
-                request.Headers.Add(apnConfig.ApnidHeader, options.ApnsId);
-            }
-
-            HttpClient client = _httpClientFactory.CreateClient();
-            using (var response = await client.SendAsync(request))
-            {
-                var succeed = response.IsSuccessStatusCode;
-                var content = await response.Content.ReadAsStringAsync();
-                var error = JsonSerializer.Deserialize<ApnError>(content);
-
-                return new ApnResult
+                if (!string.IsNullOrWhiteSpace(options.ApnsId))
                 {
-                    IsSuccess = succeed,
-                    Error = error
-                };
+                    request.Headers.Add(apnConfig.ApnidHeader, options.ApnsId);
+                }
+
+                HttpClient client = _httpClientFactory.CreateClient();
+                using (var response = await client.SendAsync(request))
+                {
+                    var succeed = response.IsSuccessStatusCode;
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    return new ApnResult
+                    {
+                        IsSuccess = succeed,
+                        Error = string.IsNullOrWhiteSpace(content) ? null : JsonSerializer.Deserialize<ApnError>(content)
+                    };
+                }
             }
         }
 

@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace KnstNotify.Core.APN
 {
     public class ApnResult : ISendResult
@@ -7,7 +9,9 @@ namespace KnstNotify.Core.APN
 
         public class ApnError
         {
+            [JsonPropertyName("reason")]
             public ApnReasonEnum Reason { get; set; }
+            [JsonPropertyName("timestamp")]
             public long? Timestamp { get; set; }
         }
     }

@@ -5,18 +5,29 @@ using System.Text.Json.Serialization;
 namespace KnstNotify.Core.APN
 {
     /// <summary>
-    /// 
+    /// https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification
     /// </summary>
     public class ApnPayload : ISendPayload
     {
         [JsonPropertyName("aps")]
-        public Aps Aps { get; } = new Aps();
+        public Aps Aps { get; set; } = new Aps();
     }
 
     public class Aps : IDictionary<string, object>
     {
         [JsonPropertyName("alert")]
-        public ApsAlert Alert { get => (ApsAlert)_aps["alert"]; set => _aps["alert"] = value; }
+        public ApsAlert Alert
+        {
+            get
+            {
+                if (!_aps.ContainsKey("alert"))
+                {
+                    _aps["alert"] = new ApsAlert();
+                }
+                return (ApsAlert)_aps["alert"];
+            }
+            set => _aps["alert"] = value;
+        }
 
         [JsonPropertyName("badge")]
         public int Badge { get => (int)_aps["badge"]; set => _aps["badge"] = value; }
@@ -24,14 +35,20 @@ namespace KnstNotify.Core.APN
         [JsonPropertyName("sound")]
         public string Sound { get => (string)_aps["sound"]; set => _aps["sound"] = value; }
 
-        [JsonPropertyName("content-available")]
-        public int ContentAvailable { get => (int)_aps["content-available"]; set => _aps["content-available"] = value; }
+        [JsonPropertyName("thread-id")]
+        public string ThreadId { get => (string)_aps["thread-id"]; set => _aps["thread-id"] = value; }
 
         [JsonPropertyName("category")]
         public string Category { get => (string)_aps["category"]; set => _aps["category"] = value; }
 
-        [JsonPropertyName("thread-id")]
-        public string ThreadId { get => (string)_aps["thread-id"]; set => _aps["thread-id"] = value; }
+        [JsonPropertyName("content-available")]
+        public int ContentAvailable { get => (int)_aps["content-available"]; set => _aps["content-available"] = value; }
+
+        [JsonPropertyName("mutable-content")]
+        public int MutableContent { get => (int)_aps["mutable-content"]; set => _aps["mutable-content"] = value; }
+
+        [JsonPropertyName("target-content-id")]
+        public string TargetContentId { get => (string)_aps["target-content-id"]; set => _aps["target-content-id"] = value; }
 
         #region IDictionary<string, object>
         private IDictionary<string, object> _aps = new Dictionary<string, object>();
@@ -108,14 +125,26 @@ namespace KnstNotify.Core.APN
         [JsonPropertyName("title")]
         public string Title { get => (string)_alert["title"]; set => _alert["title"] = value; }
 
+        [JsonPropertyName("subtitle")]
+        public string Subtitle { get => (string)_alert["subtitle"]; set => _alert["subtitle"] = value; }
+
         [JsonPropertyName("body")]
         public string Body { get => (string)_alert["body"]; set => _alert["body"] = value; }
+
+        [JsonPropertyName("launch-image")]
+        public string LaunchImage { get => (string)_alert["launch-image"]; set => _alert["launch-image"] = value; }
 
         [JsonPropertyName("title-loc-key")]
         public string TitleLocKey { get => (string)_alert["title-loc-key"]; set => _alert["title-loc-key"] = value; }
 
         [JsonPropertyName("title-loc-args")]
         public IEnumerable<string> TitleLocArgs { get => (IEnumerable<string>)_alert["title-loc-args"]; set => _alert["title-loc-args"] = value; }
+
+        [JsonPropertyName("subtitle-loc-key")]
+        public string SubtitleLocKey { get => (string)_alert["subtitle-loc-key"]; set => _alert["subtitle-loc-key"] = value; }
+
+        [JsonPropertyName("title-loc-args")]
+        public IEnumerable<string> SubtitleLocArgs { get => (IEnumerable<string>)_alert["subtitle-loc-args"]; set => _alert["subtitle-loc-args"] = value; }
 
         [JsonPropertyName("action-loc-key")]
         public string ActionLocKey { get => (string)_alert["action-loc-key"]; set => _alert["action-loc-key"] = value; }
@@ -125,9 +154,6 @@ namespace KnstNotify.Core.APN
 
         [JsonPropertyName("loc-args")]
         public IEnumerable<string> LocArgs { get => (IEnumerable<string>)_alert["loc-args"]; set => _alert["loc-args"] = value; }
-
-        [JsonPropertyName("launch-image")]
-        public string LaunchImage { get => (string)_alert["launch-image"]; set => _alert["launch-image"] = value; }
 
         #region IDictionary<string, object>
         private IDictionary<string, object> _alert = new Dictionary<string, object>();

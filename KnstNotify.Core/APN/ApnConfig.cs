@@ -8,12 +8,12 @@ namespace KnstNotify.Core.APN
 {
     public class ApnConfig : ISenderConfig
     {
-        public ApnConfig(string p8PrivateKey, string p8PrivateKeyId, string teamId, string appBundleIdentifier, ApnServerType apnServerType)
+        public ApnConfig(string p8PrivateKey, string p8PrivateKeyId, string teamId, string topic, ApnServerType apnServerType)
         {
             P8PrivateKey = p8PrivateKey ?? throw new ArgumentNullException(nameof(p8PrivateKey));
             P8PrivateKeyId = p8PrivateKeyId ?? throw new ArgumentNullException(nameof(p8PrivateKeyId));
             TeamId = teamId ?? throw new ArgumentNullException(nameof(teamId));
-            AppBundleIdentifier = appBundleIdentifier ?? throw new ArgumentNullException(nameof(appBundleIdentifier));
+            Topic = topic ?? throw new ArgumentNullException(nameof(topic));
             serverType = apnServerType;
         }
 
@@ -21,7 +21,7 @@ namespace KnstNotify.Core.APN
         public string P8PrivateKey { get; }
         public string P8PrivateKeyId { get; }
         public string TeamId { get; }
-        public string AppBundleIdentifier { get; }
+        public string Topic { get; }
         public string Server { get => servers[serverType]; }
         private ApnServerType serverType { get; }
 

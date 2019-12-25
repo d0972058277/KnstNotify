@@ -28,7 +28,7 @@ namespace KnstNotify.Core.FCM
         /// <returns></returns>
         public async Task<FcmResult> SendAsync(FcmPayload notification, Func<IFcmSender, FcmConfig> func)
         {
-            if (notification.registration_ids.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(notification.registration_ids)} Out Of Range 1000");
+            if (notification.RegistrationIds.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(notification.RegistrationIds)} Out Of Range 1000");
             FcmConfig fcmConfig = func(this);
             string json = JsonSerializer.Serialize(notification);
 

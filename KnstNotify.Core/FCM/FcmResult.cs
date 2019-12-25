@@ -1,19 +1,27 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace KnstNotify.Core.FCM
 {
     public class FcmResult : ISendResult
     {
-        public decimal multicast_id { get; set; }
-        public decimal success { get; set; }
-        public decimal failure { get; set; }
-        public IEnumerable<FcmResultInfo> results { get; set; }
+        [JsonPropertyName("multicast_id")]
+        public decimal MulticastId { get; set; }
+        [JsonPropertyName("success")]
+        public decimal Success { get; set; }
+        [JsonPropertyName("failure")]
+        public decimal Failure { get; set; }
+        [JsonPropertyName("results")]
+        public IEnumerable<FcmResultInfo> Results { get; set; }
 
         public class FcmResultInfo
         {
-            public string message_id { get; set; }
-            public string registration_id { get; set; }
-            public FcmReasonEnum? error { get; set; }
+            [JsonPropertyName("message_id")]
+            public string MessageId { get; set; }
+            [JsonPropertyName("registration_id")]
+            public string RegistrationId { get; set; }
+            [JsonPropertyName("error")]
+            public FcmReasonEnum? Error { get; set; }
         }
     }
 }
