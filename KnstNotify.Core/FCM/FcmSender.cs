@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -19,17 +20,38 @@ namespace KnstNotify.Core.FCM
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
+        public Task<FcmResult> SendAsync(FcmPayload notification, Func<IFcmSender, FcmConfig> func)
+        {
+            if (notification.RegistrationIds?.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(notification.RegistrationIds)} Out Of Range 1000");
+            FcmConfig fcmConfig = func(this);
+            return SendAsync(notification, fcmConfig);
+        }
+
+        public Task<FcmResult> SendAsync(FcmPayload notification)
+        {
+            return SendAsync(notification, sender => sender.FcmConfigs.Single());
+        }
+
+        public Task<IEnumerable<FcmResult>> SendAsync(IEnumerable<FcmPayload> notifications)
+        {
+            return SendAsync(notifications, sender => sender.FcmConfigs.Single());
+        }
+
+        public Task<IEnumerable<FcmResult>> SendAsync(IEnumerable<FcmPayload> notifications, Func<IFcmSender, FcmConfig> func)
+        {
+            if (notifications.Any(x => x.RegistrationIds?.Count() > 1000)) throw new ArgumentOutOfRangeException($"RegistrationIds Out Of Range 1000");
+            FcmConfig fcmConfig = func(this);
+            return SendAsync(notifications, fcmConfig);
+        }
+
         /// <summary>
         /// https://firebase.google.com/docs/cloud-messaging/concept-options#notifications
         /// </summary>
-        /// <param name="deviceToken"></param>
         /// <param name="notification"></param>
-        /// <param name="options"></param>
+        /// <param name="fcmConfig"></param>
         /// <returns></returns>
-        public async Task<FcmResult> SendAsync(FcmPayload notification, Func<IFcmSender, FcmConfig> func)
+        public async Task<FcmResult> SendAsync(FcmPayload notification, FcmConfig fcmConfig)
         {
-            if (notification.RegistrationIds.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(notification.RegistrationIds)} Out Of Range 1000");
-            FcmConfig fcmConfig = func(this);
             string json = JsonSerializer.Serialize(notification);
 
             using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, fcmConfig.FcmUrl))
@@ -44,16 +66,20 @@ namespace KnstNotify.Core.FCM
                 HttpClient client = _httpClientFactory.CreateClient();
                 using (var response = await client.SendAsync(httpRequest))
                 {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var result = JsonSerializer.Deserialize<FcmResult>(content);
+                    string content = await response.Content.ReadAsStringAsync();
+                    FcmResult result = JsonSerializer.Deserialize<FcmResult>(content);
+                    result.FcmPayload = notification;
                     return result;
                 }
             }
         }
 
-        public Task<FcmResult> SendAsync(FcmPayload notification)
+        public async Task<IEnumerable<FcmResult>> SendAsync(IEnumerable<FcmPayload> notifications, FcmConfig fcmConfig)
         {
-            return SendAsync(notification, sender => sender.FcmConfigs.Single());
+            Task<FcmResult>[] sendTasks = notifications.Select(notification => SendAsync(notification, fcmConfig)).ToArray();
+            FcmResult[] result = await Task.WhenAll(sendTasks);
+
+            return result;
         }
     }
 }

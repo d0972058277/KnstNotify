@@ -5,6 +5,7 @@ namespace KnstNotify.Core.FCM
 {
     public class FcmResult : ISendResult
     {
+        public FcmPayload FcmPayload { get; set; }
         [JsonPropertyName("multicast_id")]
         public decimal MulticastId { get; set; }
         [JsonPropertyName("success")]

@@ -9,6 +9,9 @@ namespace KnstNotify.Core.APN
     /// </summary>
     public class ApnPayload : ISendPayload
     {
+        [JsonIgnore]
+        public string DeviceToken { get; set; }
+
         [JsonPropertyName("aps")]
         public Aps Aps { get; set; } = new Aps();
     }

@@ -22,21 +22,40 @@ namespace KnstNotify.Core.APN
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
+        public Task<ApnResult> SendAsync(ApnPayload notification, Func<IApnSender, ApnConfig> func, ApnOptions options = null)
+        {
+            ApnConfig apnConfig = func(this);
+            return SendAsync(notification, apnConfig, options);
+        }
+
+        public Task<ApnResult> SendAsync(ApnPayload notification, ApnOptions options = null)
+        {
+            return SendAsync(notification, sender => sender.ApnConfigs.Single(), options);
+        }
+
+        public Task<IEnumerable<ApnResult>> SendAsync(IEnumerable<ApnPayload> notifications, ApnOptions options = null)
+        {
+            return SendAsync(notifications, sender => sender.ApnConfigs.Single(), options);
+        }
+
+        public Task<IEnumerable<ApnResult>> SendAsync(IEnumerable<ApnPayload> notifications, Func<IApnSender, ApnConfig> func, ApnOptions options = null)
+        {
+            ApnConfig apnConfig = func(this);
+            return SendAsync(notifications, apnConfig, options);
+        }
+
         /// <summary>
         /// https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/CreatingtheNotificationPayload.html#//apple_ref/doc/uid/TP40008194-CH10-SW1
         /// </summary>
-        /// <param name="deviceToken"></param>
         /// <param name="notification"></param>
+        /// <param name="apnConfig"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public async Task<ApnResult> SendAsync(string deviceToken, ApnPayload notification, Func<IApnSender, ApnConfig> func, ApnOptions options = null)
+        public async Task<ApnResult> SendAsync(ApnPayload notification, ApnConfig apnConfig, ApnOptions options = null)
         {
             if (options is null) options = new ApnOptions();
-            ApnConfig apnConfig = func(this);
-
-            var path = $"/3/device/{deviceToken}";
-            var json = JsonSerializer.Serialize(notification);
-
+            string path = $"/3/device/{notification.DeviceToken}";
+            string json = JsonSerializer.Serialize(notification);
 
             using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(apnConfig.Server + path)) { Version = new Version(2, 0), Content = new StringContent(json) })
             {
@@ -57,11 +76,12 @@ namespace KnstNotify.Core.APN
                 HttpClient client = _httpClientFactory.CreateClient();
                 using (var response = await client.SendAsync(request))
                 {
-                    var succeed = response.IsSuccessStatusCode;
-                    var content = await response.Content.ReadAsStringAsync();
+                    bool succeed = response.IsSuccessStatusCode;
+                    string content = await response.Content.ReadAsStringAsync();
 
                     return new ApnResult
                     {
+                        ApnPayload = notification,
                         IsSuccess = succeed,
                         Error = string.IsNullOrWhiteSpace(content) ? null : JsonSerializer.Deserialize<ApnError>(content)
                     };
@@ -69,28 +89,10 @@ namespace KnstNotify.Core.APN
             }
         }
 
-        public Task<ApnResult> SendAsync(string deviceToken, ApnPayload notification, ApnOptions options = null)
+        public async Task<IEnumerable<ApnResult>> SendAsync(IEnumerable<ApnPayload> notifications, ApnConfig apnConfig, ApnOptions options = null)
         {
-            return SendAsync(deviceToken, notification, sender => sender.ApnConfigs.Single(), options);
-        }
-
-        public IEnumerable<ApnResult> Send(IEnumerable<string> deviceTokens, ApnPayload notification, ApnOptions options = null)
-        {
-            return Send(deviceTokens, notification, sender => sender.ApnConfigs.Single(), options);
-        }
-
-        public IEnumerable<ApnResult> Send(IEnumerable<string> deviceTokens, ApnPayload notification, Func<IApnSender, ApnConfig> func, ApnOptions options = null)
-        {
-            if (deviceTokens.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(deviceTokens)} Out Of Range 1000");
-
-            ConcurrentBag<ApnResult> result = new ConcurrentBag<ApnResult>();
-
-            Task[] sendTasks = deviceTokens.Select(async deviceToken =>
-            {
-                ApnResult apnResult = await SendAsync(deviceToken, notification, func, options);
-                result.Add(apnResult);
-            }).ToArray();
-            Task.WaitAll(sendTasks);
+            Task<ApnResult>[] sendTasks = notifications.Select(notification => SendAsync(notification, apnConfig, options)).ToArray();
+            ApnResult[] result = await Task.WhenAll(sendTasks);
 
             return result;
         }

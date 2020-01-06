@@ -4,6 +4,7 @@ namespace KnstNotify.Core.APN
 {
     public class ApnResult : ISendResult
     {
+        public ApnPayload ApnPayload { get; set; }
         public bool IsSuccess { get; set; }
         public ApnError Error { get; set; }
 
