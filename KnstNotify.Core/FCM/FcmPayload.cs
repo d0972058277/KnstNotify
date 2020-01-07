@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace KnstNotify.Core.FCM
 {
     /// <summary>
-    /// https://firebase.google.com/docs/cloud-messaging/http-server-ref.html?hl=zh-cn#%E4%B8%8B%E8%A1%8C-http-%E6%B6%88%E6%81%AF-json
+    /// https://firebase.google.com/docs/cloud-messaging/http-server-ref.html
     /// </summary>
     public class FcmPayload : ISendPayload
     {

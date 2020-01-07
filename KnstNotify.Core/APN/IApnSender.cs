@@ -6,7 +6,7 @@ namespace KnstNotify.Core.APN
 {
     public interface IApnSender : ISender
     {
-        IEnumerable<ApnConfig> ApnConfigs { get; }
+        IEnumerable<ApnConfig> Configs { get; }
         Task<ApnResult> SendAsync(ApnPayload notification, ApnOptions options = null);
         Task<ApnResult> SendAsync(ApnPayload notification, Func<IApnSender, ApnConfig> func, ApnOptions options = null);
         Task<ApnResult> SendAsync(ApnPayload notification, ApnConfig apnConfig, ApnOptions options = null);

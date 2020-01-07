@@ -11,12 +11,12 @@ namespace KnstNotify.Core.FCM
 {
     internal class FcmSender : IFcmSender
     {
-        public IEnumerable<FcmConfig> FcmConfigs { get; }
+        public IEnumerable<FcmConfig> Configs { get; }
         private readonly IHttpClientFactory _httpClientFactory;
 
         public FcmSender(IEnumerable<FcmConfig> fcmConfigs, IHttpClientFactory httpClientFactory)
         {
-            FcmConfigs = fcmConfigs ?? throw new ArgumentNullException(nameof(fcmConfigs));
+            Configs = fcmConfigs ?? throw new ArgumentNullException(nameof(fcmConfigs));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
@@ -28,12 +28,12 @@ namespace KnstNotify.Core.FCM
 
         public Task<FcmResult> SendAsync(FcmPayload notification)
         {
-            return SendAsync(notification, sender => sender.FcmConfigs.Single());
+            return SendAsync(notification, sender => sender.Configs.Single());
         }
 
         public Task<IEnumerable<FcmResult>> SendAsync(IEnumerable<FcmPayload> notifications)
         {
-            return SendAsync(notifications, sender => sender.FcmConfigs.Single());
+            return SendAsync(notifications, sender => sender.Configs.Single());
         }
 
         public Task<IEnumerable<FcmResult>> SendAsync(IEnumerable<FcmPayload> notifications, Func<IFcmSender, FcmConfig> func)
@@ -63,7 +63,7 @@ namespace KnstNotify.Core.FCM
                 }
                 httpRequest.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                HttpClient client = _httpClientFactory.CreateClient();
+                HttpClient client = _httpClientFactory.CreateClient("FCM");
                 using (var response = await client.SendAsync(httpRequest))
                 {
                     string content = await response.Content.ReadAsStringAsync();

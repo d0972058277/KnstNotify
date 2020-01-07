@@ -7,8 +7,10 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddKnsNotify(this IServiceCollection services)
+        public static IServiceCollection AddKnstNotify(this IServiceCollection services)
         {
+            services.AddHttpClient("APN");
+            services.AddHttpClient("FCM");
             services.AddSingleton<IApnSender, ApnSender>();
             services.AddSingleton<IFcmSender, FcmSender>();
             return services;

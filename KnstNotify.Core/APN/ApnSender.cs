@@ -13,12 +13,12 @@ namespace KnstNotify.Core.APN
 {
     public class ApnSender : IApnSender
     {
-        public IEnumerable<ApnConfig> ApnConfigs { get; }
+        public IEnumerable<ApnConfig> Configs { get; }
         private readonly IHttpClientFactory _httpClientFactory;
 
         public ApnSender(IEnumerable<ApnConfig> apnsConfigs, IHttpClientFactory httpClientFactory)
         {
-            ApnConfigs = apnsConfigs ?? throw new ArgumentNullException(nameof(apnsConfigs));
+            Configs = apnsConfigs ?? throw new ArgumentNullException(nameof(apnsConfigs));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
         }
 
@@ -30,12 +30,12 @@ namespace KnstNotify.Core.APN
 
         public Task<ApnResult> SendAsync(ApnPayload notification, ApnOptions options = null)
         {
-            return SendAsync(notification, sender => sender.ApnConfigs.Single(), options);
+            return SendAsync(notification, sender => sender.Configs.Single(), options);
         }
 
         public Task<IEnumerable<ApnResult>> SendAsync(IEnumerable<ApnPayload> notifications, ApnOptions options = null)
         {
-            return SendAsync(notifications, sender => sender.ApnConfigs.Single(), options);
+            return SendAsync(notifications, sender => sender.Configs.Single(), options);
         }
 
         public Task<IEnumerable<ApnResult>> SendAsync(IEnumerable<ApnPayload> notifications, Func<IApnSender, ApnConfig> func, ApnOptions options = null)
@@ -73,7 +73,7 @@ namespace KnstNotify.Core.APN
                     request.Headers.Add(apnConfig.ApnidHeader, options.ApnsId);
                 }
 
-                HttpClient client = _httpClientFactory.CreateClient();
+                HttpClient client = _httpClientFactory.CreateClient("APN");
                 using (var response = await client.SendAsync(request))
                 {
                     bool succeed = response.IsSuccessStatusCode;

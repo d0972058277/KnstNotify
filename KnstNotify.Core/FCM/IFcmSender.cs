@@ -6,7 +6,7 @@ namespace KnstNotify.Core.FCM
 {
     public interface IFcmSender
     {
-        IEnumerable<FcmConfig> FcmConfigs { get; }
+        IEnumerable<FcmConfig> Configs { get; }
         Task<FcmResult> SendAsync(FcmPayload notification);
         Task<FcmResult> SendAsync(FcmPayload notification, Func<IFcmSender, FcmConfig> func);
         Task<FcmResult> SendAsync(FcmPayload notification, FcmConfig fcmConfig);
