@@ -66,6 +66,7 @@ namespace KnstNotify.Core.FCM
                 HttpClient client = _httpClientFactory.CreateClient("FCM");
                 using (var response = await client.SendAsync(httpRequest))
                 {
+                    response.EnsureSuccessStatusCode();
                     string content = await response.Content.ReadAsStringAsync();
                     FcmResult result = JsonSerializer.Deserialize<FcmResult>(content);
                     result.FcmPayload = notification;
