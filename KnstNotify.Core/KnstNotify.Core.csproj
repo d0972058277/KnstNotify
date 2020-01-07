@@ -6,10 +6,10 @@
     <Authors>PorriDG3</Authors>
     <DevelopmentDependency>true</DevelopmentDependency>
     <Owners>PorriDG3</Owners>
-    <PackageProjectUrl>https://github.com/kingnetsmart/KnstNotify</PackageProjectUrl>
-    <Summary>APN and FCM .net core sender</Summary>
+    <PackageProjectUrl>https://github.com/d0972058277/KnstNotify</PackageProjectUrl>
+    <Summary>A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM)</Summary>
     <Title>KnstNotify.Core</Title>
-    <Description>APN and FCM .net core sender</Description>
+    <Description>A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM)</Description>
     <Copyright>PorriDG3</Copyright>
     <PackOnBuild>true</PackOnBuild>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
