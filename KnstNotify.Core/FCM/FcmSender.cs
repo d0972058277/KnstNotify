@@ -22,7 +22,6 @@ namespace KnstNotify.Core.FCM
 
         public Task<FcmResult> SendAsync(FcmPayload notification, Func<IFcmSender, FcmConfig> func)
         {
-            if (notification.RegistrationIds?.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(notification.RegistrationIds)} Out Of Range 1000");
             FcmConfig fcmConfig = func(this);
             return SendAsync(notification, fcmConfig);
         }
@@ -52,6 +51,7 @@ namespace KnstNotify.Core.FCM
         /// <returns></returns>
         public async Task<FcmResult> SendAsync(FcmPayload notification, FcmConfig fcmConfig)
         {
+            if (notification.RegistrationIds?.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(notification.RegistrationIds)} Out Of Range 1000");
             string json = JsonSerializer.Serialize(notification);
 
             using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, fcmConfig.FcmUrl))
