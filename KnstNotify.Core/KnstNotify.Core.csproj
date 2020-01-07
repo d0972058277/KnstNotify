@@ -2,6 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageVersion>1.0.0-pre</PackageVersion>
+    <Authors>PorriDG3</Authors>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <Owners>PorriDG3</Owners>
+    <PackageProjectUrl>https://github.com/kingnetsmart/KnstNotify</PackageProjectUrl>
+    <Summary>APN and FCM .net core sender</Summary>
+    <Title>KnstNotify.Core</Title>
+    <Description>APN and FCM .net core sender</Description>
+    <Copyright>PorriDG3</Copyright>
+    <PackOnBuild>true</PackOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1591</NoWarn>
+    <DocumentationFile>bin\Debug\netstandard2.1\KnstNotify.Core.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+    <DocumentationFile>bin\Release\netstandard2.1\KnstNotify.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
