@@ -4,7 +4,6 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageVersion>1.0.0-pre</PackageVersion>
     <Authors>PorriDG3</Authors>
-    <DevelopmentDependency>true</DevelopmentDependency>
     <Owners>PorriDG3</Owners>
     <PackageProjectUrl>https://github.com/d0972058277/KnstNotify</PackageProjectUrl>
     <Summary>A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM)</Summary>
