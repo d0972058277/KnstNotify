@@ -25,7 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApnConfig(this IServiceCollection services, Func<ApnConfig> func)
         {
             ApnConfig config = func.Invoke();
-            services.AddSingleton<ApnConfig>(config);
+            services.AddApnConfig(config);
             return services;
         }
 
@@ -45,6 +45,22 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
+        public static IServiceCollection AddApnConfig(this IServiceCollection services, Func<IServiceProvider, ApnConfig> func)
+        {
+            IServiceProvider provider = services.BuildServiceProvider();
+            ApnConfig config = func(provider);
+            services.AddApnConfig(config);
+            return services;
+        }
+
+        public static IServiceCollection AddApnConfigs(this IServiceCollection services, Func<IServiceProvider, IEnumerable<ApnConfig>> func)
+        {
+            IServiceProvider provider = services.BuildServiceProvider();
+            IEnumerable<ApnConfig> configs = func(provider);
+            services.AddApnConfigs(configs);
+            return services;
+        }
+
         public static IServiceCollection AddFcmConfig(this IServiceCollection services, FcmConfig config)
         {
             services.AddSingleton<FcmConfig>(config);
@@ -54,7 +70,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddFcmConfig(this IServiceCollection services, Func<FcmConfig> func)
         {
             FcmConfig config = func.Invoke();
-            services.AddSingleton<FcmConfig>(config);
+            services.AddFcmConfig(config);
             return services;
         }
 
@@ -70,6 +86,22 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddFcmConfigs(this IServiceCollection services, Func<IEnumerable<FcmConfig>> func)
         {
             IEnumerable<FcmConfig> configs = func.Invoke();
+            services.AddFcmConfigs(configs);
+            return services;
+        }
+
+        public static IServiceCollection AddFcmConfig(this IServiceCollection services, Func<IServiceProvider, FcmConfig> func)
+        {
+            IServiceProvider provider = services.BuildServiceProvider();
+            FcmConfig config = func(provider);
+            services.AddFcmConfig(config);
+            return services;
+        }
+
+        public static IServiceCollection AddApnConfigs(this IServiceCollection services, Func<IServiceProvider, IEnumerable<FcmConfig>> func)
+        {
+            IServiceProvider provider = services.BuildServiceProvider();
+            IEnumerable<FcmConfig> configs = func(provider);
             services.AddFcmConfigs(configs);
             return services;
         }
