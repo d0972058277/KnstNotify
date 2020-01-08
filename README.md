@@ -104,7 +104,7 @@ IEnumerable<FcmPayload> fcmPayloads = tokens.Select(token =>
 IEnumerable<FcmResult> fcmResults = await fcmSender.SendAsync(fcmPayloads);
 ```
 ***
-## Support Multi Senders
+## Support Multi 
 ### APN Example :
 ```
 // In Startup.cs ConfigureServices
