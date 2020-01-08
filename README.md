@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.com/d0972058277/KnstNotify.svg?branch=master)](https://travis-ci.com/d0972058277/KnstNotify)[![Board Status](https://dev.azure.com/KingnetTW/3aa837e8-1ad5-4957-89e3-22a84b469ad1/11fe6816-3024-4d74-8f5d-f7ffa1d12e9c/_apis/work/boardbadge/2ea5de1b-2543-4a91-b32d-2d976b61d48f?columnOptions=1)](https://dev.azure.com/KingnetTW/3aa837e8-1ad5-4957-89e3-22a84b469ad1/_boards/board/t/11fe6816-3024-4d74-8f5d-f7ffa1d12e9c/Microsoft.RequirementCategory/)
+[![Build Status](https://dev.azure.com/KingnetTW/KnstNotify/_apis/build/status/d0972058277.KnstNotify?branchName=master)](https://dev.azure.com/KingnetTW/KnstNotify/_build/latest?definitionId=2&branchName=master)
+[![Board Status](https://dev.azure.com/KingnetTW/3aa837e8-1ad5-4957-89e3-22a84b469ad1/11fe6816-3024-4d74-8f5d-f7ffa1d12e9c/_apis/work/boardbadge/2ea5de1b-2543-4a91-b32d-2d976b61d48f?columnOptions=1)](https://dev.azure.com/KingnetTW/3aa837e8-1ad5-4957-89e3-22a84b469ad1/_boards/board/t/11fe6816-3024-4d74-8f5d-f7ffa1d12e9c/Microsoft.RequirementCategory/)
 
 # KnstNotify
 A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM).
