@@ -12,7 +12,7 @@
     <Copyright>PorriDG3</Copyright>
     <PackOnBuild>true</PackOnBuild>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageTags>APN, APNS, FCM, Notification, Push, Push Notification, Cloud Message, Knst, KnstNotify, Notify</PackageTags>
+    <PackageTags>APN;APNS;FCM;GCM;Notification;Knst;KnstNotify;Notify;Push</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
