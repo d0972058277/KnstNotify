@@ -52,6 +52,7 @@ namespace KnstNotify.Core.FCM
         public async Task<FcmResult> SendAsync(FcmPayload notification, FcmConfig fcmConfig)
         {
             if (notification.RegistrationIds?.Count() > 1000) throw new ArgumentOutOfRangeException($"{nameof(notification.RegistrationIds)} Out Of Range 1000");
+            if (fcmConfig.DryRun.HasValue) notification.DryRun = fcmConfig.DryRun.Value;
             string json = JsonSerializer.Serialize(notification);
 
             using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, fcmConfig.FcmUrl))

@@ -108,8 +108,8 @@ IEnumerable<FcmResult> fcmResults = await fcmSender.SendAsync(fcmPayloads);
 ### APN Example :
 ```
 // In Startup.cs ConfigureServices
-services.AddApnConfig(new ApnConfig("{P8-PrivateKey-1}", "{P8-PrivateKeyId-1}", "{TeamId-1}", "{Topic-1}", ApnServerType.Development));
-services.AddApnConfig(new ApnConfig("{P8-PrivateKey-2}", "{P8-PrivateKeyId-2}", "{TeamId-2}", "{Topic-2}", ApnServerType.Development));
+services.AddApnConfig(new ApnConfig("{P8-PrivateKey-1}", "{P8-PrivateKeyId-1}", "{TeamId-1}", "{Topic-1}", HostEnvironment.IsDevelopment() ? ApnServerType.Development : ApnServerType.Production));
+services.AddApnConfig(new ApnConfig("{P8-PrivateKey-2}", "{P8-PrivateKeyId-2}", "{TeamId-2}", "{Topic-2}", HostEnvironment.IsDevelopment() ? ApnServerType.Development : ApnServerType.Production));
 services.AddKnstNotify();
 
 // Usage
@@ -118,8 +118,8 @@ IEnumerable<ApnResult> apnResults = await apnSender.SendAsync(apnPayloads, sende
 ### FCM Example :
 ```
 // In Startup.cs ConfigureServices
-services.AddFcmConfig(new FcmConfig("{ServerKey-1}"));
-services.AddFcmConfig(new FcmConfig("{ServerKey-2}"));
+services.AddFcmConfig(new FcmConfig("{ServerKey-1}"), HostEnvironment.IsDevelopment());
+services.AddFcmConfig(new FcmConfig("{ServerKey-2}"), HostEnvironment.IsDevelopment());
 services.AddKnstNotify();
 
 // Usage
