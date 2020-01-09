@@ -47,7 +47,6 @@ Create an fcm payload :
 ```
 FcmPayload fcmPayload = new FcmPayload()
 {
-    DryRun = true,    // sandbox
     Data = new Dictionary<string, object>()
 };
 fcmPayload.To = "{deviceToken}";
@@ -90,7 +89,6 @@ IEnumerable<FcmPayload> fcmPayloads = tokens.Select(token =>
 {
     FcmPayload fcmPayload = new FcmPayload()
     {
-        DryRun = true,
         Data = new Dictionary<string, object>()
     };
     fcmPayload.To = token;
