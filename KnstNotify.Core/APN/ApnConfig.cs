@@ -17,6 +17,7 @@ namespace KnstNotify.Core.APN
             serverType = apnServerType;
         }
 
+        public string Name { get; set; }
         public string ApnidHeader { get; } = "apns-id";
         public string P8PrivateKey { get; }
         public string P8PrivateKeyId { get; }

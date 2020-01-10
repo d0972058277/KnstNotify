@@ -4,6 +4,7 @@ namespace KnstNotify.Core.FCM
 {
     public class FcmConfig : ISenderConfig
     {
+        public string Name { get; set; }
         public string ServerKey { get; }
         public string SenderId { get; }
         public bool? DryRun { get; }
