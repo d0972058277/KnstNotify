@@ -15,6 +15,9 @@ Register in Startup.cs ConfigureServices, for example :
 services.AddApnConfig(new ApnConfig("{P8-PrivateKey}", "{P8-PrivateKeyId}", "{TeamId}", "{Topic}", ApnServerType.Development));
 services.AddKnstNotify();
 ```
+P8-PrivateKey :
+![Alt text](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/P8_PrivateKey.PNG)
+
 Create an apn payload :
 [ApnPayload](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification)
 ```
@@ -25,7 +28,7 @@ apnPayload.Aps.Alert.Title = "title";
 apnPayload.Aps.Alert.Subtitle = "subtitle";
 apnPayload.Aps.Alert.Body = "body";
 apnPayload.Aps.Sound = "default";
-apnPayload.Aps["Key1"] = "Value1";
+apnPayload.Aps.Add("Key1", "Value1");
 apnPayload.Aps["Key2"] = "Value2";
 ```
 Send apn payload :
@@ -77,7 +80,7 @@ IEnumerable<ApnPayload> apnPayloads = tokens.Select(token=>{
     apnPayload.Aps.Alert.Subtitle = "subtitle";
     apnPayload.Aps.Alert.Body = "body";
     apnPayload.Aps.Sound = "default";
-    apnPayload.Aps["Key1"] = "Value1";
+    apnPayload.Aps.Add("Key1", "Value1");
     apnPayload.Aps["Key2"] = "Value2";
     return apnPayload;
 });
