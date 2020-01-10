@@ -105,24 +105,24 @@ IEnumerable<FcmPayload> fcmPayloads = tokens.Select(token =>
 IEnumerable<FcmResult> fcmResults = await fcmSender.SendAsync(fcmPayloads);
 ```
 ***
-## Support Multi Keys
+## Support Multi Configs
 ### APN Example :
 ```
 // In Startup.cs ConfigureServices
-services.AddApnConfig(new ApnConfig("{P8-PrivateKey-1}", "{P8-PrivateKeyId-1}", "{TeamId-1}", "{Topic-1}", HostEnvironment.IsDevelopment() ? ApnServerType.Development : ApnServerType.Production));
-services.AddApnConfig(new ApnConfig("{P8-PrivateKey-2}", "{P8-PrivateKeyId-2}", "{TeamId-2}", "{Topic-2}", HostEnvironment.IsDevelopment() ? ApnServerType.Development : ApnServerType.Production));
+services.AddApnConfig(new ApnConfig("{P8-PrivateKey-1}", "{P8-PrivateKeyId-1}", "{TeamId-1}", "{Topic-1}", HostEnvironment.IsDevelopment() ? ApnServerType.Development : ApnServerType.Production){ Name = "Config1" });
+services.AddApnConfig(new ApnConfig("{P8-PrivateKey-2}", "{P8-PrivateKeyId-2}", "{TeamId-2}", "{Topic-2}", HostEnvironment.IsDevelopment() ? ApnServerType.Development : ApnServerType.Production){ Name = "Config2" });
 services.AddKnstNotify();
 
 // Usage
-IEnumerable<ApnResult> apnResults = await apnSender.SendAsync(apnPayloads, sender => sender.Configs.First());
+IEnumerable<ApnResult> apnResults = await apnSender.SendAsync(apnPayloads, sender => sender.Configs.Single(x => x.Name == "Config1"));
 ```
 ### FCM Example :
 ```
 // In Startup.cs ConfigureServices
-services.AddFcmConfig(new FcmConfig("{ServerKey-1}"), HostEnvironment.IsDevelopment());
-services.AddFcmConfig(new FcmConfig("{ServerKey-2}"), HostEnvironment.IsDevelopment());
+services.AddFcmConfig(new FcmConfig("{ServerKey-1}"){ Name = "Config1" }, HostEnvironment.IsDevelopment());
+services.AddFcmConfig(new FcmConfig("{ServerKey-2}"){ Name = "Config2" }, HostEnvironment.IsDevelopment());
 services.AddKnstNotify();
 
 // Usage
-IEnumerable<FcmResult> fcmResults = await fcmSender.SendAsync(fcmPayloads, sender => sender.Configs.First());
+IEnumerable<FcmResult> fcmResults = await fcmSender.SendAsync(fcmPayloads, sender => sender.Configs.Single(x => x.Name == "Config1"));
 ```
