@@ -25,8 +25,8 @@ apnPayload.Aps.Alert.Title = "title";
 apnPayload.Aps.Alert.Subtitle = "subtitle";
 apnPayload.Aps.Alert.Body = "body";
 apnPayload.Aps.Sound = "default";
-apnPayload.Aps.MutableContent = 1;
-apnPayload.Aps.ContentAvailable = 1;
+apnPayload.Aps["Key1"] = "Value1";
+apnPayload.Aps["Key2"] = "Value2";
 ```
 Send apn payload :
 ```
@@ -47,15 +47,14 @@ Create an fcm payload :
 ```
 FcmPayload fcmPayload = new FcmPayload()
 {
-    DryRun = true,    // sandbox
-    Data = new Dictionary<string, object>()
+    Data = new Dictionary<string, object>(),
+    Notification = new Dictionary<string, object>()
 };
 fcmPayload.To = "{deviceToken}";
-fcmPayload.Data.Add("title", "title");
-fcmPayload.Data.Add("image", "icon");
-fcmPayload.Data.Add("message", "message");
-fcmPayload.Data.Add("badge", "1");
-fcmPayload.Data.Add("sound", "default");
+fcmPayload.Notification.Add("title", "title");
+fcmPayload.Notification.Add("body", "body");
+fcmPayload.Data.Add("Key1", "Value1");
+fcmPayload.Data["Key2"] = "Value2";
 ```
 Send fcm payload :
 ```
@@ -78,8 +77,8 @@ IEnumerable<ApnPayload> apnPayloads = tokens.Select(token=>{
     apnPayload.Aps.Alert.Subtitle = "subtitle";
     apnPayload.Aps.Alert.Body = "body";
     apnPayload.Aps.Sound = "default";
-    apnPayload.Aps.MutableContent = 1;
-    apnPayload.Aps.ContentAvailable = 1;
+    apnPayload.Aps["Key1"] = "Value1";
+    apnPayload.Aps["Key2"] = "Value2";
     return apnPayload;
 });
 IEnumerable<ApnResult> apnResults = await apnSender.SendAsync(apnPayloads);
@@ -90,15 +89,14 @@ IEnumerable<FcmPayload> fcmPayloads = tokens.Select(token =>
 {
     FcmPayload fcmPayload = new FcmPayload()
     {
-        DryRun = true,
-        Data = new Dictionary<string, object>()
+        Data = new Dictionary<string, object>(),
+        Notification = new Dictionary<string, object>()
     };
     fcmPayload.To = token;
-    fcmPayload.Data.Add("title", "title");
-    fcmPayload.Data.Add("image", "icon");
-    fcmPayload.Data.Add("message", "message");
-    fcmPayload.Data.Add("badge", "1");
-    fcmPayload.Data.Add("sound", "default");
+    fcmPayload.Notification.Add("title", "title");
+    fcmPayload.Notification.Add("body", "body");
+    fcmPayload.Data.Add("Key1", "Value1");
+    fcmPayload.Data["Key2"] = "Value2";
     return fcmPayload;
 });
 IEnumerable<FcmResult> fcmResults = await fcmSender.SendAsync(fcmPayloads);
