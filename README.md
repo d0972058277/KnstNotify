@@ -3,6 +3,7 @@
 ![Nuget](https://img.shields.io/nuget/v/KnstNotify.Core)
 ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/KnstNotify.Core)
 
+![ICON](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/icon.png)
 # KnstNotify
 A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM).
 
@@ -16,7 +17,7 @@ services.AddApnConfig(new ApnConfig("{P8-PrivateKey}", "{P8-PrivateKeyId}", "{Te
 services.AddKnstNotify();
 ```
 P8-PrivateKey(without newline) :
-![Alt text](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/P8_PrivateKey.PNG)
+![P8_PrivateKey](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/P8_PrivateKey.PNG)
 
 Create an apn payload :
 [ApnPayload](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification)
