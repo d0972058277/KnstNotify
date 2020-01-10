@@ -15,7 +15,7 @@ Register in Startup.cs ConfigureServices, for example :
 services.AddApnConfig(new ApnConfig("{P8-PrivateKey}", "{P8-PrivateKeyId}", "{TeamId}", "{Topic}", ApnServerType.Development));
 services.AddKnstNotify();
 ```
-P8-PrivateKey :
+P8-PrivateKey(without newline) :
 ![Alt text](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/P8_PrivateKey.PNG)
 
 Create an apn payload :
