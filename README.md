@@ -41,9 +41,9 @@ ApnResult apnResult = await apnSender.SendAsync(apnPayload);
 ### FCM
 Register in Startup.cs ConfigureServices, for example :
 ```
-services.AddFcmConfig(new FcmConfig("{ServerKey}"));
+services.AddFcmConfig(new FcmConfig("{ServerKey}", HostEnvironment.IsDevelopment()));
 // or
-services.AddFcmConfig(new FcmConfig("{ServerKey}", "{SenderId}"));
+services.AddFcmConfig(new FcmConfig("{ServerKey}", "{SenderId}", HostEnvironment.IsDevelopment()));
 services.AddKnstNotify();
 ```
 Create an fcm payload :
