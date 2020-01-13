@@ -73,7 +73,7 @@ IEnumerable<string> tokens = new string[100];
 ```
 ### APN
 ```
-IEnumerable<ApnPayload> apnPayloads = tokens.Select(token=>{
+IEnumerable<ApnPayload> apnPayloads = tokens.Select(token => {
     ApnPayload apnPayload = new ApnPayload();
     apnPayload.DeviceToken = token;
     apnPayload.Aps.Badge = 1;
