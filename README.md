@@ -3,6 +3,7 @@
 ![Nuget](https://img.shields.io/nuget/v/KnstNotify.Core)
 ![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/KnstNotify.Core)
 
+![ICON](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/icon.png)
 # KnstNotify
 A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM).
 
@@ -16,7 +17,7 @@ services.AddApnConfig(new ApnConfig("{P8-PrivateKey}", "{P8-PrivateKeyId}", "{Te
 services.AddKnstNotify();
 ```
 P8-PrivateKey(without newline) :
-![Alt text](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/P8_PrivateKey.PNG)
+![P8_PrivateKey](https://raw.githubusercontent.com/d0972058277/KnstNotify/master/P8_PrivateKey.PNG)
 
 Create an apn payload :
 [ApnPayload](https://developer.apple.com/documentation/usernotifications/setting_up_a_remote_notification_server/generating_a_remote_notification)
@@ -40,9 +41,9 @@ ApnResult apnResult = await apnSender.SendAsync(apnPayload);
 ### FCM
 Register in Startup.cs ConfigureServices, for example :
 ```
-services.AddFcmConfig(new FcmConfig("{ServerKey}"));
+services.AddFcmConfig(new FcmConfig("{ServerKey}", HostEnvironment.IsDevelopment()));
 // or
-services.AddFcmConfig(new FcmConfig("{ServerKey}", "{SenderId}"));
+services.AddFcmConfig(new FcmConfig("{ServerKey}", "{SenderId}", HostEnvironment.IsDevelopment()));
 services.AddKnstNotify();
 ```
 Create an fcm payload :
@@ -72,7 +73,7 @@ IEnumerable<string> tokens = new string[100];
 ```
 ### APN
 ```
-IEnumerable<ApnPayload> apnPayloads = tokens.Select(token=>{
+IEnumerable<ApnPayload> apnPayloads = tokens.Select(token => {
     ApnPayload apnPayload = new ApnPayload();
     apnPayload.DeviceToken = token;
     apnPayload.Aps.Badge = 1;
