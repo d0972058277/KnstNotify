@@ -26,25 +26,33 @@ namespace KnstNotify.Core.APN
         public string Server { get => servers[serverType]; }
         private ApnServerType serverType { get; }
 
+        private DateTime _iat;
         private string _jwt;
-        public string Jwt => _jwt ??= CreateJwt();
+        public string Jwt => CreateJwt();
 
         private string CreateJwt()
         {
-            var header = JsonSerializer.Serialize(new { alg = "ES256", kid = P8PrivateKeyId });
-            var payload = JsonSerializer.Serialize(new { iss = TeamId, iat = ToEpoch(DateTime.UtcNow) });
-
-            using (ECDsa key = ECDsa.Create())
+            if (_iat < DateTime.UtcNow.AddMinutes(-30))
             {
-                key.ImportPkcs8PrivateKey(Convert.FromBase64String(P8PrivateKey), out _);
+                _iat = DateTime.UtcNow;
 
-                var headerBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(header));
-                var payloadBasae64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(payload));
-                var unsignedJwtData = $"{headerBase64}.{payloadBasae64}";
-                byte[] encodedRequest = Encoding.UTF8.GetBytes(unsignedJwtData);
-                byte[] signature = key.SignData(encodedRequest, HashAlgorithmName.SHA256);
-                return $"{unsignedJwtData}.{Convert.ToBase64String(signature)}";
+                var header = JsonSerializer.Serialize(new { alg = "ES256", kid = P8PrivateKeyId });
+                var payload = JsonSerializer.Serialize(new { iss = TeamId, iat = ToEpoch(_iat) });
+
+                using (ECDsa key = ECDsa.Create())
+                {
+                    key.ImportPkcs8PrivateKey(Convert.FromBase64String(P8PrivateKey), out _);
+
+                    var headerBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(header));
+                    var payloadBasae64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(payload));
+                    var unsignedJwtData = $"{headerBase64}.{payloadBasae64}";
+                    byte[] encodedRequest = Encoding.UTF8.GetBytes(unsignedJwtData);
+                    byte[] signature = key.SignData(encodedRequest, HashAlgorithmName.SHA256);
+
+                    _jwt = $"{unsignedJwtData}.{Convert.ToBase64String(signature)}";
+                }
             }
+            return _jwt;
         }
 
         private static int ToEpoch(DateTime time)
