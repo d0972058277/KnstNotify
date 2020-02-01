@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageVersion>1.0.5-pre</PackageVersion>
+    <PackageVersion>1.0.5</PackageVersion>
     <Authors>PorriDG3</Authors>
     <Owners>PorriDG3</Owners>
     <PackageProjectUrl>https://github.com/d0972058277/KnstNotify</PackageProjectUrl>
@@ -13,6 +13,7 @@
     <PackOnBuild>true</PackOnBuild>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags>APN;APNS;FCM;GCM;Notification;Knst;KnstNotify;Notify;Push</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/d0972058277/KnstNotify/master/icon.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
