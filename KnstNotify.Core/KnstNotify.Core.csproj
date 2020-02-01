@@ -1,34 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageVersion>1.0.5</PackageVersion>
-    <Authors>PorriDG3</Authors>
-    <Owners>PorriDG3</Owners>
-    <PackageProjectUrl>https://github.com/d0972058277/KnstNotify</PackageProjectUrl>
-    <Summary>A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM)</Summary>
-    <Title>KnstNotify.Core</Title>
-    <Description>A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM)</Description>
-    <Copyright>PorriDG3</Copyright>
-    <PackOnBuild>true</PackOnBuild>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageTags>APN;APNS;FCM;GCM;Notification;Knst;KnstNotify;Notify;Push</PackageTags>
-    <PackageIconUrl>https://raw.githubusercontent.com/d0972058277/KnstNotify/master/icon.png</PackageIconUrl>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DocumentationFile>bin\Debug\netstandard2.1\KnstNotify.Core.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType></DebugType>
-    <DocumentationFile>bin\Release\netstandard2.1\KnstNotify.Core.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.0" />
-    <PackageReference Include="System.Text.Json" Version="4.7.0" />
-    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.7.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <PackageVersion>1.0.5</PackageVersion>
+        <Authors>PorriDG3</Authors>
+        <Owners>PorriDG3</Owners>
+        <PackageProjectUrl>https://github.com/d0972058277/KnstNotify</PackageProjectUrl>
+        <Summary>A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM)</Summary>
+        <Title>KnstNotify.Core</Title>
+        <Description>A sender for Apple Push Notification(APN) and Firebase Cloud Message(FCM)</Description>
+        <Copyright>PorriDG3</Copyright>
+        <PackOnBuild>true</PackOnBuild>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageTags>APN;APNS;FCM;GCM;Notification;Knst;KnstNotify;Notify;Push</PackageTags>
+        <PackageIcon>icon.png</PackageIcon>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <NoWarn>1701;1702;1591</NoWarn>
+        <DocumentationFile>bin\Debug\netstandard2.1\KnstNotify.Core.xml</DocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>
+        </DebugType>
+        <DocumentationFile>bin\Release\netstandard2.1\KnstNotify.Core.xml</DocumentationFile>
+        <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="icon.png" Pack="true" PackagePath=""/>
+        <PackageReference Include="System.Net.Http" Version="4.3.4" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.0" />
+        <PackageReference Include="System.Text.Json" Version="4.7.0" />
+        <PackageReference Include="System.Security.Cryptography.Cng" Version="4.7.0" />
+    </ItemGroup>
 </Project>
