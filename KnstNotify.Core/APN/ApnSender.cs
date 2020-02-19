@@ -75,7 +75,7 @@ namespace KnstNotify.Core.APN
                 }
 
                 HttpClient client = _httpClientFactory.CreateClient("APN");
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                client.DefaultRequestHeaders.ConnectionClose = true;
                 using (var response = await client.SendAsync(request))
                 {
                     bool succeed = response.IsSuccessStatusCode;
