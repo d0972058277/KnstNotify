@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -74,7 +75,7 @@ namespace KnstNotify.Core.APN
                 }
 
                 HttpClient client = _httpClientFactory.CreateClient("APN");
-                client.DefaultRequestHeaders.Connection.ParseAdd("keep-alive");
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 using (var response = await client.SendAsync(request))
                 {
                     bool succeed = response.IsSuccessStatusCode;
