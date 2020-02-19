@@ -74,6 +74,7 @@ namespace KnstNotify.Core.APN
                 }
 
                 HttpClient client = _httpClientFactory.CreateClient("APN");
+                client.DefaultRequestHeaders.Connection.ParseAdd("keep-alive");
                 using (var response = await client.SendAsync(request))
                 {
                     bool succeed = response.IsSuccessStatusCode;
