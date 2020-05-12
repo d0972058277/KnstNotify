@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KnstNotify.Core.FCM
 {
-    internal class FcmSender : IFcmSender
+    public class FcmSender : IFcmSender
     {
         public IEnumerable<FcmConfig> Configs { get; }
         private readonly IHttpClientFactory _httpClientFactory;

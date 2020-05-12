@@ -75,7 +75,6 @@ namespace KnstNotify.Core.APN
                 }
 
                 HttpClient client = _httpClientFactory.CreateClient("APN");
-                client.DefaultRequestHeaders.ConnectionClose = true;
                 using (var response = await client.SendAsync(request))
                 {
                     bool succeed = response.IsSuccessStatusCode;
