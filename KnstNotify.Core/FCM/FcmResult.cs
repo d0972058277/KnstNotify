@@ -22,7 +22,7 @@ namespace KnstNotify.Core.FCM
             [JsonPropertyName("registration_id")]
             public string RegistrationId { get; set; }
             [JsonPropertyName("error")]
-            public FcmReasonEnum? Error { get; set; }
+            public string Error { get; set; }
         }
     }
 }

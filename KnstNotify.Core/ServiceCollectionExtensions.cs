@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using KnstNotify.Core.APN;
 using KnstNotify.Core.FCM;
 
@@ -9,8 +10,20 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddKnstNotify(this IServiceCollection services)
         {
-            services.AddHttpClient("APN");
-            services.AddHttpClient("FCM");
+            services.AddHttpClient("APN").ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
+            services.AddHttpClient("FCM").ConfigurePrimaryHttpMessageHandler(() =>
+            {
+                var handler = new HttpClientHandler();
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                return handler;
+            });
             services.AddSingleton<IApnSender, ApnSender>();
             services.AddSingleton<IFcmSender, FcmSender>();
             return services;
